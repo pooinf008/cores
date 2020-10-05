@@ -1,0 +1,21 @@
+DROP TABLE IF EXISTS COLOR;
+CREATE TABLE COR(ID VARCHAR(255) PRIMARY KEY, 
+                                     NOME VARCHAR(255), 
+                                     ESTOQUE DOUBLE,
+                                     PRECO DOUBLE,
+                                     RED INT,
+                                     GREEN INT,
+                                     BLUE INT,
+                                     CYAN INT,
+                                     MAGENTA INT,
+                                     YELLOW INT,
+                                     KEY INT,
+                                     TIPO_COR INT)
+                                     
+
+INSERT INTO COR(ID, NOME, ESTOQUE, PRECO, RED,
+                GREEN, BLUE, CYAN, MAGENTA, YELLOW,
+                KEY, TIPO_COR)
+       VALUES('B001', 'BRANCO PURO', 150, 5, 255, 255, 255, 
+              0, 0, 0, 0, 0)                                              
+         

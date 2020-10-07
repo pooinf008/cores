@@ -18,7 +18,7 @@ public class MemColor implements ColorDAO{
     public List<Cor> buscarCorQtdeMinima(double qtde) throws Exception{
     	List<Cor> corQtde = new ArrayList<Cor>(); 
         for(Cor cor : this.cores.values())
-          if(cor.getEstoque() > qtde)
+          if(cor.getEstoque() >= qtde)
             corQtde.add(cor);  
         return corQtde;
     }
@@ -27,7 +27,6 @@ public class MemColor implements ColorDAO{
 		this.cores.put(cor.getId(), cor);
 	}
 
-
 	@Override
 	public Cor buscar(String codCor) throws Exception {
 		return this.cores.get(codCor);
@@ -35,6 +34,11 @@ public class MemColor implements ColorDAO{
 
 	@Override
 	public void atualizar(Cor cor) throws Exception {
+		this.cores.put(cor.getId(), cor);
+	}
+
+	@Override
+	public void salveOuAtualize(Cor cor) throws Exception {
 		this.cores.put(cor.getId(), cor);
 	}    
     

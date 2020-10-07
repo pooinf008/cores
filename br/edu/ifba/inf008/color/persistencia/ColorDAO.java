@@ -9,4 +9,5 @@ public interface ColorDAO {
 	public List<Cor> buscarCorQtdeMinima(double qtde) throws Exception;
 	public Cor buscar(String codCor) throws Exception;
 	public void atualizar(Cor cor) throws Exception;
+	public void salveOuAtualize(Cor cor) throws Exception;
 }

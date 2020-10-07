@@ -5,9 +5,9 @@ public class RGB {
 
 	public static RGB getSampleColor(String codCor){
     	
-        String sRed = codCor.substring(1,3);
-        String sGreen = codCor.substring(3,5);        
-        String sBlue = codCor.substring(5);   
+        String sRed = codCor.substring(0,2);
+        String sGreen = codCor.substring(2,4);        
+        String sBlue = codCor.substring(4,6);   
         
         int iRed =   Integer.decode("0x" + sRed);
         int iGreen = Integer.decode("0x" + sGreen);

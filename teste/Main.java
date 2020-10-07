@@ -6,14 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.edu.ifba.inf008.color.persistencia.SQLColor;
+
 public class Main {
 	
 	public static void main(String[] args) throws SQLException {
 		
 		String sql = "SELECT NOME FROM COR";
 		
-		DriverManager.registerDriver(new org.h2.Driver());
-		Connection conn = DriverManager.getConnection("jdbc:h2:~/color");
+		DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
+		Connection conn = DriverManager.getConnection(SQLColor.URI, SQLColor.USER, SQLColor.PWD);
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		while(rs.next())

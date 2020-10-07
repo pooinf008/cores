@@ -9,13 +9,28 @@ import br.edu.ifba.inf008.color.persistencia.ColorDAO;
 import br.edu.ifba.inf008.color.persistencia.MemColor;
 import br.edu.ifba.inf008.color.persistencia.SQLColor;
 
-public class Pintor{
+public class AppPintor{
     
 	private ColorDAO colorDAO; 
 	
-    public Pintor() throws SQLException{
-    	this.colorDAO = new SQLColor();
-    }    
+    public AppPintor(boolean memory) throws Exception{
+    	if(memory) {
+    		this.colorDAO = new MemColor();
+    		this.populateMemory();
+    	}else {
+    		this.colorDAO = new SQLColor();
+    	}
+    		
+    	
+    }   
+    
+	private void populateMemory() throws Exception {
+		this.addCorRGB("Alizarina", "ALIZARINA", 100, 10, 227, 38, 54);
+		this.addCorRGB("Azul camarada", "Azul camarada", 100, 10, 5, 79, 119);
+		this.addCorCMYK("DOURADO", "DOURADO", 100, 10, 0, 16, 100, 0);
+		this.addCorCMYK("OLIVA", "OLIVA", 100, 10, 0, 0, 100, 50);		
+	}    
+    
     
     public void addCorCMYK(String id, String nome, double estoque, double preco, int cyan, int magenta, int yellow, int key) throws Exception{
     	CorCMYK cor = new CorCMYK(id , nome, estoque, preco, cyan, magenta, yellow, key);
@@ -33,7 +48,8 @@ public class Pintor{
       RGB corExemplo = RGB.getSampleColor(codCor);
       Collections.sort(cores, new OrderColorByRef(corExemplo));  
       Cor corProxima = cores.get(0);
-      return new CorDTO(corProxima.getId(), corProxima.getNome(), corProxima.getPreco(qtde));
+      return new CorDTO(corProxima.getId(), corProxima.getNome(), 
+    		            corProxima.getPreco(qtde), corProxima.toRGB());
     }
     
     public void vender(String codCor, double qtde) throws Exception{

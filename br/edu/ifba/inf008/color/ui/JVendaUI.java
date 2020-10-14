@@ -10,16 +10,19 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.edu.ifba.inf008.color.logica.AppPintor;
+import br.edu.ifba.inf008.color.logica.ColorLogica;
 import br.edu.ifba.inf008.color.logica.RGB;
 import br.edu.ifba.inf008.color.logica.dto.CorDTO;
 
-public class JVendaUI extends JFrame implements ActionListener{
+public class JVendaUI extends JFrame implements ActionListener, ColorUI{
 	
 	private JLabel lblColor;
 	private JTextField txtColor;
@@ -34,11 +37,11 @@ public class JVendaUI extends JFrame implements ActionListener{
 	private JButton btnBuscar;
 	private JButton btnVender;
 	
-	private AppPintor pintor;
+	private ColorLogica pintor;
 	private CorDTO cor;
 	
 	
-	private void instantiate(boolean memory) throws Exception {
+	private void instantiate() throws Exception {
 		this.lblColor = new JLabel("Cor:");
 		this.txtColor = new JTextField();
 		this.lblQtde = new JLabel("Quantidade:");
@@ -52,7 +55,6 @@ public class JVendaUI extends JFrame implements ActionListener{
 		this.corEncontrada = new JPanel();
 		this.nomeCorEncontrada = new JLabel();
 		
-		this.pintor = new AppPintor(memory);
 		this.cor = null;
 	}
 	
@@ -97,35 +99,9 @@ public class JVendaUI extends JFrame implements ActionListener{
 		
 	}
 	
-	private void asmGridBag() {
-		
-		JPanel panel = new JPanel();
-		GridBagConstraints c = new GridBagConstraints();
-
-	    c.weightx = 0;
-	    c.gridwidth = 1;
-	    c.ipadx = 1;		
-		c.gridx = 0;
-		c.gridy = 0;		
-		c.fill = GridBagConstraints.HORIZONTAL;
-		panel.add(this.lblColor, c);
-
-		
-		c.gridx = 1;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;//by default fill the available grid space
-		c.insets = new Insets(0, 5, 5, 0);		
-		panel.add(this.txtColor, c);
-
-		
-		this.add(panel);
-		
-	}	
 	
-	
-	
-	public void run(boolean memory) throws Exception {
-		this.instantiate(memory);
+	public void run() throws Exception {
+		this.instantiate();
 		this.asmBorder();
 		this.render();
 	}
@@ -133,34 +109,52 @@ public class JVendaUI extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource().equals(this.btnBuscar)) {
-			String textCor = this.txtColor.getText();
-			Double qtdeCor = Double.valueOf(this.txtQtde.getText());
-			RGB rgb = RGB.getSampleColor(textCor);
-			this.corBase.setBackground(new Color(rgb.getRed(), 
-												 rgb.getGreen(),
-												 rgb.getBlue()));
-			try {
-				this.cor = this.pintor.getValor(textCor, qtdeCor);
-				this.corEncontrada.setBackground(new Color(cor.getRgb().getRed(),
-														   cor.getRgb().getGreen(),
-														   cor.getRgb().getBlue()));
-				this.nomeCorEncontrada.setText(cor.getNomeCor());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			doBuscar();
 		}else if(arg0.getSource().equals(this.btnVender)) {
-			Double qtdeCor = Double.valueOf(this.txtQtde.getText());
-			try {
-				this.pintor.vender(this.cor.getIdCor(), qtdeCor);
-				this.corBase.setBackground(new Color(125,125,125));
-				this.corEncontrada.setBackground(new Color(125,125,125));
-				this.nomeCorEncontrada.setText("VENDIDO");
-				this.cor = null;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			doVender();
 		}
 		this.repaint();
+		
+	}
+
+	private void doVender() {
+		Double qtdeCor = Double.valueOf(this.txtQtde.getText());
+		try {
+			this.pintor.vender(this.cor.getIdCor(), qtdeCor);
+			this.corBase.setBackground(new Color(125,125,125));
+			this.corEncontrada.setBackground(new Color(125,125,125));
+			this.nomeCorEncontrada.setText("VENDIDO");
+			this.cor = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void doBuscar() {
+		String textCor = this.txtColor.getText();
+		Double qtdeCor;
+		try {
+			qtdeCor = Double.valueOf(this.txtQtde.getText());
+			this.cor = this.pintor.getValor(textCor, qtdeCor);
+			RGB rgb = RGB.getSampleColor(textCor);
+			this.corBase.setBackground(new Color(rgb.getRed(),rgb.getGreen(),rgb.getBlue()));
+			this.corEncontrada.setBackground(new Color(cor.getRgb().getRed(),
+													   cor.getRgb().getGreen(),
+													   cor.getRgb().getBlue()));
+			this.nomeCorEncontrada.setText(cor.getNomeCor());
+		}catch(NumberFormatException ex) {
+			JOptionPane.showMessageDialog(this,
+				    "Formato de Litragem Invalida.",
+				    "Tipo Errado",
+				    JOptionPane.ERROR_MESSAGE);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void setLogica(ColorLogica logica) throws Exception {
+		 this.pintor = logica;
 		
 	}
 	

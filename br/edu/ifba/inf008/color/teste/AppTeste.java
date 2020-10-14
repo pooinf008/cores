@@ -13,7 +13,7 @@ public class AppTeste {
 	private AppPintor pintor;
 	
 	public AppTeste(boolean mem) throws Exception {
-		this.pintor = new AppPintor(mem);
+		this.pintor = new AppPintor();
 	}
 	
 	public void run() throws Exception {
@@ -40,7 +40,7 @@ public class AppTeste {
 	
 	public void run2(boolean memory) throws Exception{
 		JVendaUI ui = new JVendaUI();
-		ui.run(memory);
+		ui.run();
 	}
 	
 	

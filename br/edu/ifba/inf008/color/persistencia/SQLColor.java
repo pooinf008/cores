@@ -1,6 +1,7 @@
 package br.edu.ifba.inf008.color.persistencia;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +21,7 @@ public class SQLColor implements ColorDAO{
 	public static final String URI = "jdbc:hsqldb:http://localhost";
 	public static final String USER = "SA";
 	public static final String PWD = "";
+	public static final String DRIVE = "org.hsqldb.jdbc.JDBCDriver";
 
 	private static String SAVE = "INSERT INTO COR(ID, NOME, ESTOQUE, PRECO, RED,\r\n" + 
 	                                 " GREEN, BLUE, CYAN, MAGENTA, YELLOW,\r\n" + 
@@ -45,8 +47,8 @@ public class SQLColor implements ColorDAO{
             " WHERE ID = ? \r\n";
 
 	
-	public SQLColor() throws SQLException {
-		DriverManager.registerDriver(new org.hsqldb.jdbc.JDBCDriver());
+	public SQLColor() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		DriverManager.registerDriver((Driver) Class.forName(SQLColor.DRIVE).newInstance());
 	}
 	
 	private Connection getConnection() throws SQLException {

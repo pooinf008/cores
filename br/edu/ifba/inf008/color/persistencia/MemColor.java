@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import br.edu.ifba.inf008.color.logica.Cor;
+import br.edu.ifba.inf008.color.logica.CorCMYK;
+import br.edu.ifba.inf008.color.logica.CorRGB;
 
 public class MemColor implements ColorDAO{
 	
@@ -13,7 +15,22 @@ public class MemColor implements ColorDAO{
     
     public MemColor() {
         this.cores = new HashMap<String, Cor>();
+        try {
+			this.populate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
     }
+    
+    private void populate() throws Exception {
+		this.salvar(new CorRGB("Alizarina", "ALIZARINA", 100, 10, 227, 38, 54));
+		this.salvar(new CorRGB("Azul camarada", "Azul camarada", 100, 10, 5, 79, 119));
+		this.salvar(new CorCMYK("DOURADO", "DOURADO", 100, 10, 0, 16, 100, 0));
+		this.salvar(new CorCMYK("OLIVA", "OLIVA", 100, 10, 0, 0, 100, 50));	    	
+    }
+    
     
     public List<Cor> buscarCorQtdeMinima(double qtde) throws Exception{
     	List<Cor> corQtde = new ArrayList<Cor>(); 
